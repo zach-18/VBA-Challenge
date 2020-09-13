@@ -1,0 +1,94 @@
+Sub StockMarket2()
+
+' add titles to columns
+Cells(1, 9).Value = "Ticker"
+Cells(1, 10).Value = "Yearly Change"
+Cells(1, 11).Value = "Percent Change"
+Cells(1, 12).Value = "Total Stock Volume"
+Cells(2, 9).Value = Cells(2, 1).Value
+
+
+' Determine the Last Row
+    'Found on Google
+ ' Dim lastrow As Integer
+  lastrow = Range("a1").End(xlDown).Row
+            
+    MsgBox (lastrow)
+                        
+
+Dim Symbol As String
+    Symbol = Cells(2, 1).Value
+
+    MsgBox (Symbol)
+
+Dim RowCounterStart As Integer
+Dim RowCounter As Integer
+Dim i As Integer
+Dim j As Integer
+RowCounterStart = 2
+RowCounter = 2
+
+Dim ValueMax As Integer
+Dim ValueMin As Integer
+
+
+For i = 2 To 1000
+
+    If (Cells(i + 1, 1).Value) = Cells(RowCounterStart, 1).Value Then
+    
+       RowCounter = RowCounter + 1
+    
+    End If
+    
+
+    
+Next i
+
+' Determining start and stop closing value to get yearly change
+Dim CloseStart As String
+Dim CloseEnd As String
+Dim YearlyChange As String
+Dim PercentChange As String
+
+MsgBox (RowCounterStart)
+MsgBox (RowCounter)
+
+CloseStart = Cells(RowCounterStart, 6).Value
+CloseEnd = Cells(RowCounter, 6).Value
+YearlyChange = (CloseEnd) - (CloseStart)
+MsgBox (YearlyChange)
+    Cells(2, 10).Value = (YearlyChange)
+           
+    MsgBox ((CloseStart) + "start")
+    MsgBox ((CloseEnd) + " end")
+    MsgBox ((YearlyChange) + " yearlychange")
+
+' Calculating percent change
+
+PercentChange = (YearlyChange) / (CloseStart)
+MsgBox (PercentChange)
+
+    Cells(2, 11).Value = (PercentChange)
+        ' i recorded a macro to determine this vba text
+        
+        Range("k2").Select
+        Selection.NumberFormat = "0.00%"
+    
+' Calculating Total Stock Volume
+Dim TotalVolume As String
+TotalVolume = 0
+
+ For j = (RowCounterStart) To (RowCounter)
+      
+    TotalVolume = TotalVolume + (Cells(j, 7).Value)
+    
+ 
+    
+Next j
+   
+ 
+ MsgBox (TotalVolume)
+ Cells(2, 12).Value = (TotalVolume)
+  
+ 
+End Sub
