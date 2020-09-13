@@ -1,0 +1,71 @@
+Sub StockMarket2()
+
+' add titles to columns
+Cells(1, 9).Value = "Ticker"
+Cells(1, 10).Value = "Yearly Change"
+Cells(1, 11).Value = "Percent Change"
+Cells(1, 12).Value = "Total Stock Volume"
+Cells(2, 9).Value = Cells(2, 1).Value
+
+
+' Determine the Last Row
+    'Found on Google
+ ' Dim lastrow As Integer
+  lastrow = Range("a1").End(xlDown).Row
+            
+    MsgBox (lastrow)
+                        
+
+Dim Symbol As String
+    Symbol = Cells(2, 1).Value
+
+    MsgBox (Symbol)
+
+Dim RowCounterStart As Integer
+Dim RowCounter As Integer
+Dim i As Integer
+RowCounterStart = 2
+RowCounter = 2
+
+Dim ValueMax As Integer
+Dim ValueMin As Integer
+
+
+For i = 2 To 1000
+
+    If (Cells(i + 1, 1).Value) = Cells(RowCounterStart, 1).Value Then
+    
+       RowCounter = RowCounter + 1
+    
+    End If
+    
+
+    
+Next i
+
+' Determining max and min closing value to get yearly change
+Dim CloseMax As String
+Dim closeMin As Integer
+Dim Yearly
+MsgBox (RowCounterStart)
+MsgBox (RowCounter)
+MsgBox (Cells(RowCounterStart + 1, 6).Value)
+CloseMax = 0
+
+
+ For j = (RowCounterStart) To (RowCounter - 1)
+    If ((Cells(j + 1, 6).Value) > (CloseMax)) Then
+    
+    CloseMax = Cells(j + 1, 6).Value
+    
+    End If
+    
+        
+    
+Next j
+    
+    MsgBox (CloseMax)
+    
+
+
+End Sub
