@@ -1,0 +1,105 @@
+Sub StockMarket2()
+
+' add titles to columns
+Cells(1, 9).Value = "Ticker"
+Cells(1, 10).Value = "Yearly Change"
+Cells(1, 11).Value = "Percent Change"
+Cells(1, 12).Value = "Total Stock Volume"
+Cells(2, 9).Value = Cells(2, 1).Value
+
+
+' Determine the Last Row
+   
+
+Dim LastRow As String
+'Dim m As Integer
+LastRow = 0
+For m = 1 To 100000
+    If (Cells(m, 1).Value <> ("")) Then
+    LastRow = LastRow + 1
+    
+    End If
+    
+Next m
+    
+MsgBox (LastRow)
+
+
+
+
+                        
+' define the symbol
+Dim Symbol As String
+    Symbol = Cells(2, 1).Value
+
+    MsgBox ((Symbol) + " is symbol")
+    
+'prep the variables
+Dim RowCounterStart As String
+Dim RowCounter As String
+Dim i As Integer
+Dim j As Integer
+RowCounterStart = 2
+RowCounter = 2
+
+
+' Counting how many rows belong to a stock ticker
+For i = 2 To 1000
+
+    If (Cells(i + 1, 1).Value) = Cells(RowCounterStart, 1).Value Then
+       RowCounter = RowCounter + 1
+       
+    Else: End If
+    
+    
+Next i
+
+
+' Determining start and stop closing value to get yearly change
+Dim CloseStart As String
+Dim CloseEnd As String
+Dim YearlyChange As String
+Dim PercentChange As String
+
+MsgBox ((RowCounterStart) + " row start")
+MsgBox ((RowCounter) + " row stop")
+
+CloseStart = Cells(RowCounterStart, 6).Value
+CloseEnd = Cells(RowCounter, 6).Value
+YearlyChange = (CloseEnd) - (CloseStart)
+
+    Cells(2, 10).Value = (YearlyChange)
+           
+  '  MsgBox ((CloseStart) + " start")
+   ' MsgBox ((CloseEnd) + " end")
+    MsgBox ((YearlyChange) + " yearlychange")
+
+' Calculating percent change
+
+PercentChange = (YearlyChange) / (CloseStart)
+MsgBox ((PercentChange) + " % Change")
+
+    Cells(2, 11).Value = (PercentChange)
+        ' i recorded a macro to determine this vba text
+        
+        Range("k2").Select
+        Selection.NumberFormat = "0.00%"
+    
+' Calculating Total Stock Volume
+Dim TotalVolume As String
+TotalVolume = 0
+
+ For j = (RowCounterStart) To (RowCounter)
+      
+    TotalVolume = TotalVolume + (Cells(j, 7).Value)
+    
+ 
+    
+Next j
+   
+ 
+ MsgBox ((TotalVolume) + " Total Volume")
+ Cells(2, 12).Value = (TotalVolume)
+  
+ 
+End Sub
