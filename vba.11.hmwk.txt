@@ -1,0 +1,132 @@
+Sub StockMarket2()
+
+ Dim WS_Count As Integer
+         Dim Z As Integer
+
+         ' Set WS_Count equal to the number of worksheets in the active
+         ' workbook.
+         WS_Count = ActiveWorkbook.Worksheets.Count
+
+         ' Begin the loop.
+         For Z = 1 To WS_Count
+
+            ' Insert your code here.
+            ' The following line shows how to reference a sheet within
+            ' the loop by displaying the worksheet name in a dialog box.
+            
+
+        Sheets(Z).Select
+        
+    
+            
+' add titles to columns
+    Cells(1, 9).Value = "Ticker"
+    Cells(1, 10).Value = "Yearly Change"
+    Cells(1, 11).Value = "Percent Change"
+    Cells(1, 12).Value = "Total Stock Volume"
+    Cells(2, 9).Value = Cells(2, 1).Value
+
+' Determine the Last Row
+'    Dim LastRow As String
+'    LastRow = 0
+'    For m = 1 To 10000
+'        If (Cells(m, 1).Value <> ("")) Then
+'            LastRow = LastRow + 1
+'        End If
+'    Next m
+    
+  '  MsgBox (LastRow)
+
+'prep the variables
+    Dim RowCounterStart As String
+    Dim RowCounter As String
+
+RowCounterStart = 2
+RowCounter = 2
+
+'***************Here is where we repeat steps for next ticker********
+
+'**n is the outside loop for multiple ticker processing
+    For n = 1 To 500
+                   
+' identify the ticker symbol
+        Dim Symbol As String
+        Symbol = Cells(RowCounterStart, 1).Value
+
+    '    MsgBox ((Symbol) + " is symbol")
+        Cells(n + 1, 9).Value = Symbol
+
+' Counting how many rows belong to a stock ticker
+        For I = 1 To 300
+
+            If (Cells(RowCounterStart, 1).Value) = Cells(RowCounterStart + I, 1).Value Then
+            RowCounter = RowCounter + 1
+       
+            Else: End If
+        
+        Next I
+    
+            
+   '     MsgBox ((RowCounterStart) + " row start")
+   '     MsgBox ((RowCounter) + " row stop")
+        
+' Determining start and stop closing value to get yearly change
+        Dim CloseStart As String
+        Dim CloseEnd As String
+        Dim YearlyChange As String
+        Dim PercentChange As String
+
+        CloseStart = Cells(RowCounterStart, 6).Value
+   '     MsgBox ((CloseStart) + " close start")
+        CloseEnd = Cells(RowCounter, 6).Value
+   '     MsgBox ((CloseEnd) + " close end")
+        YearlyChange = (CloseEnd) - (CloseStart)
+
+        Cells(n + 1, 10).Value = (YearlyChange)
+           
+   '     MsgBox ((YearlyChange) + " yearlychange")
+
+' Calculating percent change
+'***********need to deal with a zero in stock price causes error w/ % change*****
+        
+        If (Cells(RowCounterStart, 3).Value <> 0) Then
+            
+            PercentChange = (YearlyChange) / (CloseStart)
+   '         MsgBox ((PercentChange) + " % Change")
+    
+            Cells(n + 1, 11).Value = (PercentChange)
+            'I recorded a macro to determine this vba text
+            
+            Cells(n + 1, 11).Select
+            Selection.NumberFormat = "0.00%"
+        Else: End If
+        
+    
+' Calculating Total Stock Volume
+        Dim TotalVolume As String
+        TotalVolume = 0
+
+        For j = (RowCounterStart) To (RowCounter)
+       
+            TotalVolume = TotalVolume + (Cells(j, 7).Value)
+        Next j
+    
+   '     MsgBox ((TotalVolume) + " Total Volume")
+        Cells(n + 1, 12).Value = (TotalVolume)
+  
+        RowCounterStart = RowCounter + 1
+        RowCounter = RowCounter + 1
+        
+        If (Cells((RowCounterStart) + 10, 1).Value = 0) Then
+          n = 800
+          Else: End If
+          
+       
+Next n
+    
+MsgBox ActiveWorkbook.Worksheets(Z).Name
+
+         Next Z
+
+End Sub
+
